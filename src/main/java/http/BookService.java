@@ -6,16 +6,23 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.InputMismatchException;
 
-public class Main {
+public class BookService {
 
-    public static void main(String[] args) {
+    public String chooseBook(String isbnNumber) throws CustomException {
+        String uri = "https://openlibrary.org/isbn/" + isbnNumber + ".json";
+        return get(uri);
+    }
 
-        public String randomBook() throws CustomException {
-            String uri = "https://openlibrary.org/dev/docs/api/books";
-            return get(uri);
-        }
+    public String book() throws CustomException {
+        String uri = "https://openlibrary.org/isbn/";
+        return get(uri);
+    }
 
+
+
+    private String get(String uri) throws CustomException {
         try {
             URL url = new URL(uri);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -26,20 +33,22 @@ public class Main {
 
             while ((line = in.readLine()) != null) {
                 stringBuilder.append(line);
-            }
 
+            }
             in.close();
 
-            if (stringBuilder.toString() == null || stringBuilder.toString() == "");
-
+            return stringBuilder.toString();
 
         } catch (MalformedURLException e) {
             e.printStackTrace();
-            System.out.println("Błąd");
+
         } catch (IOException e) {
             e.printStackTrace();
+
+        } catch (InputMismatchException e) {
+            e.printStackTrace();
         }
-
-
+        return null;
     }
 }
+
